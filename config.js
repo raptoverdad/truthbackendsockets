@@ -1,10 +1,11 @@
 const MYSQL_HOST= process.env.MYSQL_HOST || 'localhost'
-const CORS_ORIGIN= process.env.CORS_ORIGIN || 'http://localhost:8080'
+const CORS_ORIGIN= process.env.CORS_ORIGIN || '*'
 const PORT=process.env.PORT || 4000
 const MYSQL_PASSWORD= process.env.MYSQL_PASSWORD || 'Bnx6aw300172_'
 const MYSQL_USER= process.env.MYSQL_USER || 'theraptoreumtruth'
 const MYSQL_DATABASE=process.env.MYSQL_DATABASE || 'theraptoreumtruth'
-const MYSQL_PORT = process.env.MYSQL_PORT
+const MYSQL_PORT = process.env.MYSQL_PORT 
+
 
 exports.MYSQL_HOST = MYSQL_HOST
 exports.MYSQL_PASSWORD=MYSQL_PASSWORD
