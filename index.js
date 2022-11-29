@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
-const mysql=require('mysql');
+const {createPool}=require('mysql2/promise')
 const server = http.createServer(app);
 const {MYSQL_DATABASE,MYSQL_HOST,MYSQL_USER,MYSQL_PASSWORD,PORT,CORS_ORIGIN,MYSQL_PORT}=require('./config')
 
