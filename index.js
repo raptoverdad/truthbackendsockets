@@ -24,10 +24,10 @@ res.send('hi')
 
 const conector= createPool({host:MYSQL_HOST,user:MYSQL_USER,password:MYSQL_PASSWORD,port:MYSQL_PORT,database:MYSQL_DATABASE})
 
-io.on('connection',(socket)=>{ 
+io.on('connection',async (socket)=>{ 
 
 
-    function sendVotes(){
+    async function sendVotes(){
         let minafacilvotes= 0
         let flockpoolvotes=0
         let raptoreumzonevotes=0
@@ -44,12 +44,11 @@ io.on('connection',(socket)=>{
         let verdadchanvotes=0
         let yesvotes=0
         let novotes=0
-        conector.query('SELECT * FROM surveys',(err,results,field)=>{
-        if(err){
-            console.log('err:',err)
-            socket.emit('error')
-          }else if(results){
-         for (let i = 0; i < results.length; i++) {
+        let [result]=await conector.query('SELECT * FROM surveys')
+ 
+        //si hay algun error // socket.emit('error')
+        if(result){
+            for (let i = 0; i < results.length; i++) {
                 if(results[i].miningvote === "minafacil"){
                     minafacilvotes++;
                 } if(results[i].miningvote === "flockpool"){
@@ -91,26 +90,30 @@ io.on('connection',(socket)=>{
                  }
       
             }
-            console.log('bitvotes',bitvotes)
-     io.sockets.emit('surveysvotes',{minafacilvotes,flockpoolvotes,raptoreumzonevotes,raptorhashvotes,inodezvotes,sullynodevotes,fastvotes,slowvotes,bitvotes,charlievotes,verdadvotes,rabidvotes,zlatachanvotes,verdadchanvotes,yesvotes,novotes}) 
-    }})}
+
+     io.sockets.emit('surveysvotes',{minafacilvotes,flockpoolvotes,raptoreumzonevotes,raptorhashvotes,inodezvotes,sullynodevotes,fastvotes,slowvotes,bitvotes,charlievotes,verdadvotes,rabidvotes,zlatachanvotes,verdadchanvotes,yesvotes,novotes})
+        }
+  
+    }
         
 
-socket.on('chatVisitor',(token)=>{
+socket.on('chatVisitor',async (token)=>{
+try {
+let [result]=await conector.query('SELECT * FROM CHAT')
 
-conector.query('SELECT * FROM CHAT',(err,result,field)=>{
-if(err){
-    console.log('err:',err)
-    socket.emit('error')
-  }else if(result){
+if(result){
     socket.emit('chatMessages',result)
-  }else if(field){
-    console.log('field:',field)
-  }
-})
+}else{
+     socket.emit('error')
+}
+} catch (error) {
+    console.log('chatVisitor error:',error)
+}
+
+
 })
 
-socket.on('surveysVisitor',(token)=>{
+socket.on('surveysVisitor',async(token)=>{
             
     let minafacilvotes= 0
     let flockpoolvotes=0
@@ -128,16 +131,11 @@ socket.on('surveysVisitor',(token)=>{
     let verdadchanvotes=0
     let yesvotes=0
     let novotes=0
-    conector.query('SELECT * FROM surveys',(err,results,field)=>{
-    if(err){
-        console.log('err:',err)
-        socket.emit('error')
-      }else if(results){
 
+     try {    let [result]=await conector.query('SELECT * FROM surveys')
+                if(result){
 
- 
-        
-        for (let i = 0; i < results.length; i++) {
+            for (let i = 0; i < results.length; i++) {
             if(results[i].miningvote === "minafacil"){
                 minafacilvotes++;
             } if(results[i].miningvote === "flockpool"){
@@ -179,114 +177,111 @@ socket.on('surveysVisitor',(token)=>{
              }
   
         }
-        console.log('bitvotes',bitvotes)
+     
         socket.emit('surveysvotes',{minafacilvotes,flockpoolvotes,raptoreumzonevotes,raptorhashvotes,inodezvotes,sullynodevotes,fastvotes,slowvotes,bitvotes,charlievotes,verdadvotes,rabidvotes,zlatachanvotes,verdadchanvotes,yesvotes,novotes})  
-  
-
+}else{
+    socket.emit('error')
+    console.log('field:',field)
 }
-else if(field){
-        console.log('field:',field)
- }
-    })
-    })
+     } catch (error) {
+        console.log('surveys visitor error:',error)
+     }
+})
 
-    socket.on('surveyvote',(data)=>
+
+socket.on('surveyvote',async (data)=>
 {
     console.log('voto',data.vote)
 
-conector.query(`SELECT * FROM users WHERE email='${data.email}'`,(err,results,fields)=>{
-    if(err){
+let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.email}'`)
+
+    if(!result1){
         socket.emit('permission') 
-        console.log(err)
-    
-    }else if(!results){
+    }else if(!result1[0]){
         socket.emit('permission') 
-    }else if(!results[0]){
+    }else if( result1[0].email != data.email ){
         socket.emit('permission') 
-    }else if( results[0].email != data.email ){
-        socket.emit('permission') 
-    }else if(results[0].email== data.email){
+    }else if(result1[0].email== data.email){
         console.log('valid email')
         let surveyquery=`SELECT * FROM surveys WHERE useremail='${data.email}'`
 
-        conector.query(surveyquery, function (error, result, fields){
-          console.log(result)
-                if(error){
-                    socket.emit('error')
-                    console.log(error)
-                 }else if(!result[0]){
+       let [result2]=await conector.query(surveyquery)
+       
+                if(!result2[0]){
                     socket.emit('error')
                     console.log('here')
-                 }else if(result[0]){
+                 }else if(result2[0]){
                     
                     if(data.vote==='raptoreumzone' || data.vote==='flockpool' || data.vote==='minafacil' || data.vote==='raptorhash'){
           
                         let surveyquery2=`UPDATE surveys SET miningvote = '${data.vote}' WHERE useremail = '${data.email}'`
-                        conector.query(surveyquery2,(updateError,updateResults,updateFields)=>{
-                            if(updateError){
-                               socket.emit('update-error')
-                   
-                            }else{
-                            sendVotes()
+                        let [result3] =await conector.query(surveyquery2)
+                        try {
+                            if(result3){
+                                sendVotes()
                             }
-                        })
+                        } catch (error) {
+                            socket.emit('update-error')
+                        }
+
                      }else if(data.vote==='sullynode' || data.vote==='inodez'){
                         let surveyquery3=`UPDATE surveys SET sharenodesvote = '${data.vote}' WHERE useremail = '${data.email}'`
-                        conector.query(surveyquery3,(updateError,updateResults,updateFields)=>{
-                            if(updateError){
-                               socket.emit('update-error')
-                            }else{
-                            sendVotes()
+                        let [result4]=conector.query(surveyquery3)
+                        try {
+                            if(result4){
+                                sendVotes()
                             }
-                        })
+                        } catch (error) {
+                            socket.emit('update-error')
+                        }
                      }else if(data.vote==='fast' || data.vote==='slow'){
                         let surveyquery4=`UPDATE surveys SET developerswork = '${data.vote}' WHERE useremail = '${data.email}'`
-                        conector.query(surveyquery4,(updateError,updateResults,updateFields)=>{
-                            if(updateError){
-                               socket.emit('update-error')
-                            }else{
-                            sendVotes()
+                        let [result5]=conector.query(surveyquery4)
+                        try {
+                            if(result5){
+                                sendVotes()
                             }
-                        })
+                        } catch (error) {
+                            socket.emit('update-error')
+                        }
+                      
                      }else if(data.vote==='bit' || data.vote==='verdad' || data.vote==='rabid'  || data.vote==='charlie'){
                         let surveyquery5=`UPDATE surveys SET youtubersvote = '${data.vote}' WHERE useremail = '${data.email}'`
-                        conector.query(surveyquery5,(updateError,updateResults,updateFields)=>{
-                            if(updateError){
-                               socket.emit('update-error')
-                            }else{
-                            sendVotes()
+                        let [result6]=conector.query(surveyquery5)
+                        try {
+                            if(result6){
+                                sendVotes()
                             }
-                        })
+                        } catch (error) {
+                            socket.emit('update-error')
+                        }
+                      
                      }
                      else if(data.vote==='zlatachan' || data.vote==='verdadchan'){
-                        let surveyquery5=`UPDATE surveys SET chanvote = '${data.vote}' WHERE useremail = '${data.email}'`
-                        conector.query(surveyquery5,(updateError,updateResults,updateFields)=>{
-                            if(updateError){
-                               socket.emit('update-error')
-                            }else{
-                            sendVotes()
+                        let surveyquery6=`UPDATE surveys SET chanvote = '${data.vote}' WHERE useremail = '${data.email}'`
+                        let [result7]=conector.query(surveyquery6)
+                        try {
+                            if(result7){
+                                sendVotes()
                             }
-                        })
+                        } catch (error) {
+                            socket.emit('update-error')
+                        }
+
                      }    else if(data.vote==='yes' || data.vote==='no'){
-                        let surveyquery6=`UPDATE surveys SET rainsvote = '${data.vote}' WHERE useremail = '${data.email}'`
-                        conector.query(surveyquery6,(updateError,updateResults,updateFields)=>{
-                            if(updateError){
-                               socket.emit('update-error')
-                            }else{
-                            sendVotes()
+                        let surveyquery8=`UPDATE surveys SET rainsvote = '${data.vote}' WHERE useremail = '${data.email}'`
+                        let [result8]=conector.query(surveyquery8)
+                        try {
+                            if(result8){
+                                sendVotes()
                             }
-                        })
+                        } catch (error) {
+                            socket.emit('update-error')
+                        }
                      }
                  }
-                
-            
-         
-               
-        })
-       
-      
     }
-})
+
 })
 
 socket.on('new-message',(data)=>
@@ -339,7 +334,4 @@ conector.query(sql1, function (error, results, fields){
     }
 })
 })
-
 })
-
-  
