@@ -299,10 +299,10 @@ if(!result9){
     }else if(result9[0].username == data.user && result9[0].email== data.email && result9[0].profilepicture== data.profilepicture)
     {
        let sql2=`INSERT INTO chat (user, mensaje,profilepicture) VALUES ('${data.user}', '${data.message}', '${data.profilepicture}');`
-       let [result10] = conector.query(sql2)
+       let [result10] = await conector.query(sql2)
             if(result10){
                 let sql3 = `SELECT * FROM chat`
-                let [result11]=conector.query(sql3)
+                let [result11]=await conector.query(sql3)
                     if(!result11){
                         socket.emit('message-status')
                         console.log('here1')
