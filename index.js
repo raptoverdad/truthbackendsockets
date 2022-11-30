@@ -47,7 +47,7 @@ io.on('connection',async (socket)=>{
  
         //si hay algun error // socket.emit('error')
         if(result){
-            for (let i = 0; i < results.length; i++) {
+            for (let i = 0; i < result.length; i++) {
                 if(result[i].miningvote === "minafacil"){
                     minafacilvotes++;
                 } if(result[i].miningvote === "flockpool"){
@@ -134,44 +134,44 @@ socket.on('surveysVisitor',async(token)=>{
      try {    let [result]=await conector.query('SELECT * FROM surveys')
                 if(result){
 
-            for (let i = 0; i < results.length; i++) {
-            if(results[i].miningvote === "minafacil"){
+            for (let i = 0; i < result.length; i++) {
+            if(result[i].miningvote === "minafacil"){
                 minafacilvotes++;
-            } if(results[i].miningvote === "flockpool"){
+            } if(result[i].miningvote === "flockpool"){
                 flockpoolvotes++
-            } if(results[i].miningvote === "raptorhash"){
+            } if(result[i].miningvote === "raptorhash"){
                 raptorhashvotes++
-            } if(results[i].miningvote === "raptoreumzone"){
+            } if(result[i].miningvote === "raptoreumzone"){
                raptoreumzonevotes++
-            } if(results[i].sharenodesvote === "inodez"){
+            } if(result[i].sharenodesvote === "inodez"){
                 inodezvotes++
-             } if(results[i].sharenodesvote === "sullynode"){
+             } if(result[i].sharenodesvote === "sullynode"){
                 sullynodevotes++
              }
-              if(results[i].developerswork === "fast"){
+              if(result[i].developerswork === "fast"){
                 fastvotes++
              }
-              if(results[i].developerswork === "slow"){
+              if(result[i].developerswork === "slow"){
                 slowvotes++
-             }  if(results[i].youtubersvote === "bit"){
+             }  if(result[i].youtubersvote === "bit"){
                 bitvotes++
              }
-              if(results[i].youtubersvote === "charlie"){
+              if(result[i].youtubersvote === "charlie"){
                 charlievotes++
              }
-              if(results[i].youtubersvote === "verdad"){
+              if(result[i].youtubersvote === "verdad"){
                 verdadvotes++
-             }  if(results[i].youtubersvote === "rabid"){
+             }  if(result[i].youtubersvote === "rabid"){
                 rabidvotes++
-             }  if(results[i].chanvote === "zlatachan"){
+             }  if(result[i].chanvote === "zlatachan"){
                 zlatachanvotes++
-             } if(results[i].chanvote === "verdadchan"){
+             } if(result[i].chanvote === "verdadchan"){
                 verdadchanvotes++
              }
-              if(results[i].rainsvote === "yes"){
+              if(result[i].rainsvote === "yes"){
                 yesvotes++
              }
-              if(results[i].rainsvote === "no"){
+              if(result[i].rainsvote === "no"){
                 novotes++
              }
   
