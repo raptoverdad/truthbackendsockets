@@ -226,7 +226,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
 
                      }else if(data.vote==='sullynode' || data.vote==='inodez'){
                         let surveyquery3=`UPDATE surveys SET sharenodesvote = '${data.vote}' WHERE useremail = '${data.email}'`
-                        let [result4]=conector.query(surveyquery3)
+                        let [result4]=await conector.query(surveyquery3)
                         try {
                             if(result4){
                                 sendVotes()
@@ -236,7 +236,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                         }
                      }else if(data.vote==='fast' || data.vote==='slow'){
                         let surveyquery4=`UPDATE surveys SET developerswork = '${data.vote}' WHERE useremail = '${data.email}'`
-                        let [result5]=conector.query(surveyquery4)
+                        let [result5]=await conector.query(surveyquery4)
                         try {
                             if(result5){
                                 sendVotes()
@@ -247,7 +247,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                       
                      }else if(data.vote==='bit' || data.vote==='verdad' || data.vote==='rabid'  || data.vote==='charlie'){
                         let surveyquery5=`UPDATE surveys SET youtubersvote = '${data.vote}' WHERE useremail = '${data.email}'`
-                        let [result6]=conector.query(surveyquery5)
+                        let [result6]=await conector.query(surveyquery5)
                         try {
                             if(result6){
                                 sendVotes()
@@ -259,7 +259,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                      }
                      else if(data.vote==='zlatachan' || data.vote==='verdadchan'){
                         let surveyquery6=`UPDATE surveys SET chanvote = '${data.vote}' WHERE useremail = '${data.email}'`
-                        let [result7]=conector.query(surveyquery6)
+                        let [result7]=await conector.query(surveyquery6)
                         try {
                             if(result7){
                                 sendVotes()
@@ -270,7 +270,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
 
                      }    else if(data.vote==='yes' || data.vote==='no'){
                         let surveyquery8=`UPDATE surveys SET rainsvote = '${data.vote}' WHERE useremail = '${data.email}'`
-                        let [result8]=conector.query(surveyquery8)
+                        let [result8]=await conector.query(surveyquery8)
                         try {
                             if(result8){
                                 sendVotes()
@@ -284,54 +284,45 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
 
 })
 
-socket.on('new-message',(data)=>
+socket.on('new-message',async(data)=>
 {
 
 console.log('remember to validate this!',data)
 let sql1=`SELECT * FROM users WHERE username='${data.user}' and email='${data.email}' and profilepicture='${data.profilepicture}'`
 
-conector.query(sql1, function (error, results, fields){
-    if(error){
+let [result9]=await conector.query(sql1)
+if(!result9){
         socket.emit('permission') 
-    
-    }else if(!results){
+    }else if(!result9[0]){
         socket.emit('permission') 
-    }else if(!results[0]){
+    }else if(result9[0].username != data.user){
         socket.emit('permission') 
-    }else if(results[0].username != data.user){
-        socket.emit('permission') 
-    }else if(results[0].username == data.user && results[0].email== data.email && results[0].profilepicture== data.profilepicture){
-
-        let sql2=`INSERT INTO chat (user, mensaje,profilepicture) VALUES ('${data.user}', '${data.message}', '${data.profilepicture}');`
-        conector.query(sql2, function (error, results, fields){
-            if(error){
-                socket.emit('message-status',{success:'false'})
-          
-            }else{
+    }else if(result9[0].username == data.user && results[0].email== data.email && results[0].profilepicture== data.profilepicture)
+    {
+       let sql2=`INSERT INTO chat (user, mensaje,profilepicture) VALUES ('${data.user}', '${data.message}', '${data.profilepicture}');`
+       let [result10] = conector.query(sql2)
+            if(result10){
                 let sql3 = `SELECT * FROM chat`
-                conector.query(sql3, function (error, results, fields){
-                    if(error){
-                        socket.emit('message-status')
-                        console.log('here')
-                    }else if(!results){
+                let [result11]=conector.query(sql3)
+                    if(!result11){
                         socket.emit('message-status')
                         console.log('here1')
-                    }else if(!results[0]){
+                    }else if(!result11[0]){
                         socket.emit('message-status') 
                         console.log('here2')
                     }
-                    else if(results[0].user != ''){
+                    else if(result11[0].user != ''){
                         io.sockets.emit('chatMessages',results)
                         
                       
                     }
-                })
+                
               
             }
-        })
+   
        
       
     }
-})
+
 })
 })
