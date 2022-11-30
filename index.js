@@ -296,7 +296,7 @@ if(!result9){
         socket.emit('permission') 
     }else if(result9[0].username != data.user){
         socket.emit('permission') 
-    }else if(result9[0].username == data.user && results[0].email== data.email && results[0].profilepicture== data.profilepicture)
+    }else if(result9[0].username == data.user && result9[0].email== data.email && result9[0].profilepicture== data.profilepicture)
     {
        let sql2=`INSERT INTO chat (user, mensaje,profilepicture) VALUES ('${data.user}', '${data.message}', '${data.profilepicture}');`
        let [result10] = conector.query(sql2)
