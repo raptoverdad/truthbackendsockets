@@ -26,8 +26,7 @@ const conector= createPool({host:MYSQL_HOST,user:MYSQL_USER,password:MYSQL_PASSW
 
 io.on('connection',async (socket)=>{ 
 
-
-    async function sendVotes(){
+ async function sendVotes(){
         let minafacilvotes= 0
         let flockpoolvotes=0
         let raptoreumzonevotes=0
@@ -99,7 +98,7 @@ io.on('connection',async (socket)=>{
 
 socket.on('chatVisitor',async (token)=>{
 try {
-let [result]=await conector.query('SELECT * FROM CHAT')
+let [result]=await conector.query('SELECT * FROM chat')
 
 if(result){
     socket.emit('chatMessages',result)
