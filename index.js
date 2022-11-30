@@ -131,13 +131,13 @@ socket.on('surveysVisitor',async(token)=>{
     let yesvotes=0
     let novotes=0
 
-     try {    let [resultVisitor]=await conector.query('SELECT * FROM surveys')
-                if(result){
+     try {let [resultVisitor]=await conector.query('SELECT * FROM surveys')
+                if(resultVisitor){
 
             for (let i = 0; i < result.length; i++) {
             if(resultVisitor[i].miningvote === "minafacil"){
                 minafacilvotes++;
-            } if(result[i].miningvote === "flockpool"){
+            } if(resultVisitor[i].miningvote === "flockpool"){
                 flockpoolvotes++
             } if(resultVisitor[i].miningvote === "raptorhash"){
                 raptorhashvotes++
