@@ -131,47 +131,47 @@ socket.on('surveysVisitor',async(token)=>{
     let yesvotes=0
     let novotes=0
 
-     try {    let [result]=await conector.query('SELECT * FROM surveys')
+     try {    let [resultVisitor]=await conector.query('SELECT * FROM surveys')
                 if(result){
 
             for (let i = 0; i < result.length; i++) {
-            if(result[i].miningvote === "minafacil"){
+            if(resultVisitor[i].miningvote === "minafacil"){
                 minafacilvotes++;
             } if(result[i].miningvote === "flockpool"){
                 flockpoolvotes++
-            } if(result[i].miningvote === "raptorhash"){
+            } if(resultVisitor[i].miningvote === "raptorhash"){
                 raptorhashvotes++
-            } if(result[i].miningvote === "raptoreumzone"){
+            } if(resultVisitor[i].miningvote === "raptoreumzone"){
                raptoreumzonevotes++
-            } if(result[i].sharenodesvote === "inodez"){
+            } if(resultVisitor[i].sharenodesvote === "inodez"){
                 inodezvotes++
-             } if(result[i].sharenodesvote === "sullynode"){
+             } if(resultVisitor[i].sharenodesvote === "sullynode"){
                 sullynodevotes++
              }
-              if(result[i].developerswork === "fast"){
+              if(resultVisitor[i].developerswork === "fast"){
                 fastvotes++
              }
-              if(result[i].developerswork === "slow"){
+              if(resultVisitor[i].developerswork === "slow"){
                 slowvotes++
-             }  if(result[i].youtubersvote === "bit"){
+             }  if(resultVisitor[i].youtubersvote === "bit"){
                 bitvotes++
              }
-              if(result[i].youtubersvote === "charlie"){
+              if(resultVisitor[i].youtubersvote === "charlie"){
                 charlievotes++
              }
-              if(result[i].youtubersvote === "verdad"){
+              if(resultVisitor[i].youtubersvote === "verdad"){
                 verdadvotes++
-             }  if(result[i].youtubersvote === "rabid"){
+             }  if(resultVisitor[i].youtubersvote === "rabid"){
                 rabidvotes++
-             }  if(result[i].chanvote === "zlatachan"){
+             }  if(resultVisitor[i].chanvote === "zlatachan"){
                 zlatachanvotes++
-             } if(result[i].chanvote === "verdadchan"){
+             } if(resultVisitor[i].chanvote === "verdadchan"){
                 verdadchanvotes++
              }
-              if(result[i].rainsvote === "yes"){
+              if(resultVisitor[i].rainsvote === "yes"){
                 yesvotes++
              }
-              if(result[i].rainsvote === "no"){
+              if(resultVisitor[i].rainsvote === "no"){
                 novotes++
              }
   
