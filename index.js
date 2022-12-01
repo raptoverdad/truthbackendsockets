@@ -26,31 +26,31 @@ const conector= createPool({host:MYSQL_HOST,user:MYSQL_USER,password:MYSQL_PASSW
 
 io.on('connection',async (socket)=>{ 
 
- async function sendVotes(){
+ async function sendVotesAllSockets(){
 
         let [result]=await conector.query('SELECT * FROM surveys')
  
         //si hay algun error // socket.emit('error')
         if(result){
-         
+            let minafacilvotes= 0
+            let flockpoolvotes=0
+            let raptoreumzonevotes=0
+            let raptorhashvotes=0
+            let inodezvotes=0
+            let sullynodevotes=0
+            let fastvotes=0
+            let slowvotes=0
+            let bitvotes=0
+            let charlievotes=0
+            let verdadvotes=0
+            let rabidvotes=0
+            let zlatachanvotes=0
+            let verdadchanvotes=0
+            let yesvotes=0
+            let novotes=0
             console.log('sending vote:',result)
             for (let i = 0; i < result.length; i++) {
-                let minafacilvotes= 0
-                let flockpoolvotes=0
-                let raptoreumzonevotes=0
-                let raptorhashvotes=0
-                let inodezvotes=0
-                let sullynodevotes=0
-                let fastvotes=0
-                let slowvotes=0
-                let bitvotes=0
-                let charlievotes=0
-                let verdadvotes=0
-                let rabidvotes=0
-                let zlatachanvotes=0
-                let verdadchanvotes=0
-                let yesvotes=0
-                let novotes=0
+      
                 if(result[i].miningvote === "minafacil"){
                     minafacilvotes++;
                 } if(result[i].miningvote === "flockpool"){
@@ -97,7 +97,79 @@ io.on('connection',async (socket)=>{
         }
        io.sockets.emit('surveysvotes',{minafacilvotes,flockpoolvotes,raptoreumzonevotes,raptorhashvotes,inodezvotes,sullynodevotes,fastvotes,slowvotes,bitvotes,charlievotes,verdadvotes,rabidvotes,zlatachanvotes,verdadchanvotes,yesvotes,novotes})
     }
+    async function sendVotesSocket(){
+
+        let [result]=await conector.query('SELECT * FROM surveys')
+ 
+        //si hay algun error // socket.emit('error')
+        if(result){
+            let minafacilvotes= 0
+            let flockpoolvotes=0
+            let raptoreumzonevotes=0
+            let raptorhashvotes=0
+            let inodezvotes=0
+            let sullynodevotes=0
+            let fastvotes=0
+            let slowvotes=0
+            let bitvotes=0
+            let charlievotes=0
+            let verdadvotes=0
+            let rabidvotes=0
+            let zlatachanvotes=0
+            let verdadchanvotes=0
+            let yesvotes=0
+            let novotes=0
+            console.log('sending vote:',result)
+            for (let i = 0; i < result.length; i++) {
+      
+                if(result[i].miningvote === "minafacil"){
+                    minafacilvotes++;
+                } if(result[i].miningvote === "flockpool"){
+                    flockpoolvotes++
+                } if(result[i].miningvote === "raptorhash"){
+                    raptorhashvotes++
+                } if(result[i].miningvote === "raptoreumzone"){
+                   raptoreumzonevotes++
+                } if(result[i].sharenodesvote === "inodez"){
+                    inodezvotes++
+                 } if(result[i].sharenodesvote === "sullynode"){
+                    sullynodevotes++
+                 }
+                  if(result[i].developerswork === "fast"){
+                    fastvotes++
+                 }
+                  if(result[i].developerswork === "slow"){
+                    slowvotes++
+                 }  if(result[i].youtubersvote === "bit"){
+                    bitvotes++
+                 }
+                  if(result[i].youtubersvote === "charlie"){
+                    charlievotes++
+                 }
+                  if(result[i].youtubersvote === "verdad"){
+                    verdadvotes++
+                 }  if(result[i].youtubersvote === "rabid"){
+                    rabidvotes++
+                 }  if(result[i].chanvote === "zlatachan"){
+                    zlatachanvotes++
+                 } if(result[i].chanvote === "verdadchan"){
+                    verdadchanvotes++
+                 }
+                  if(result[i].rainsvote === "yes"){
+                    yesvotes++
+                 }
+                  if(result[i].rainsvote === "no"){
+                    novotes++
+                 }
+      
+            }
+
+ 
+        }
+     sockets.emit('surveysvotes',{minafacilvotes,flockpoolvotes,raptoreumzonevotes,raptorhashvotes,inodezvotes,sullynodevotes,fastvotes,slowvotes,bitvotes,charlievotes,verdadvotes,rabidvotes,zlatachanvotes,verdadchanvotes,yesvotes,novotes})
+    }
         
+
 
 socket.on('chatVisitor',async (token)=>{
 try {
@@ -117,79 +189,12 @@ if(result){
 
 socket.on('surveysVisitor',async(token)=>{
             
+    try {
+        sendVotesSocket()
+    } catch (error) {
+        console.log('surveysvisitor error:',error)
+    }
 
-     try {
-        let [resultVisitor]=await conector.query('SELECT * FROM surveys')
-            if(resultVisitor){
-             console.log('serveysVisitor:',resultVisitor)
-            for (let i = 0; i < resultVisitor.length; i++) {
-                let minafacilvotes= 0
-                let flockpoolvotes=0
-                let raptoreumzonevotes=0
-                let raptorhashvotes=0
-                let inodezvotes=0
-                let sullynodevotes=0
-                let fastvotes=0
-                let slowvotes=0
-                let bitvotes=0
-                let charlievotes=0
-                let verdadvotes=0
-                let rabidvotes=0
-                let zlatachanvotes=0
-                let verdadchanvotes=0
-                let yesvotes=0
-                let novotes=0
-            
-            if(resultVisitor[i].miningvote === "minafacil"){
-                minafacilvotes++;
-            } if(resultVisitor[i].miningvote === "flockpool"){
-                flockpoolvotes++
-            } if(resultVisitor[i].miningvote === "raptorhash"){
-                raptorhashvotes++
-            } if(resultVisitor[i].miningvote === "raptoreumzone"){
-               raptoreumzonevotes++
-            } if(resultVisitor[i].sharenodesvote === "inodez"){
-                inodezvotes++
-             } if(resultVisitor[i].sharenodesvote === "sullynode"){
-                sullynodevotes++
-             }
-              if(resultVisitor[i].developerswork === "fast"){
-                fastvotes++
-             }
-              if(resultVisitor[i].developerswork === "slow"){
-                slowvotes++
-             }  if(resultVisitor[i].youtubersvote === "bit"){
-                bitvotes++
-             }
-              if(resultVisitor[i].youtubersvote === "charlie"){
-                charlievotes++
-             }
-              if(resultVisitor[i].youtubersvote === "verdad"){
-                verdadvotes++
-             }  if(resultVisitor[i].youtubersvote === "rabid"){
-                rabidvotes++
-             }  if(resultVisitor[i].chanvote === "zlatachan"){
-                zlatachanvotes++
-             } if(resultVisitor[i].chanvote === "verdadchan"){
-                verdadchanvotes++
-             }
-              if(resultVisitor[i].rainsvote === "yes"){
-                yesvotes++
-             }
-              if(resultVisitor[i].rainsvote === "no"){
-                novotes++
-             }
-  
-        }
-     
-        socket.emit('surveysvotes',{minafacilvotes,flockpoolvotes,raptoreumzonevotes,raptorhashvotes,inodezvotes,sullynodevotes,fastvotes,slowvotes,bitvotes,charlievotes,verdadvotes,rabidvotes,zlatachanvotes,verdadchanvotes,yesvotes,novotes})  
-}else{
-    socket.emit('error')
-    console.log('field:',field)
-}
-     } catch (error) {
-        console.log('surveys visitor error:',error)
-     }
 })
 
 
@@ -277,7 +282,11 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                         let [result8]=await conector.query(surveyquery8)
                         try {
                             if(result8){
-                                sendVotes()
+                                try {
+                                    sendVotesAllSockets()
+                                } catch (error) {
+                                    console.log('surveysvote error:',error)
+                                }
                             }
                         } catch (error) {
                             socket.emit('update-error')
