@@ -215,7 +215,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
         let surveyquery=`SELECT * FROM surveys WHERE useremail='${data.email}'`
 
        let [result2]=await conector.query(surveyquery)
-       
+       console.log('socketvotedata:',result2)
                 if(!result2[0]){
                     socket.emit('error')
                     console.log('here')
