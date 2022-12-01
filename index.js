@@ -271,7 +271,9 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                         let [result7]=await conector.query(surveyquery6)
                         try {
                             if(result7){
+
                                 sendVotes()
+                                
                             }
                         } catch (error) {
                             socket.emit('update-error')
