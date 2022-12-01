@@ -3,7 +3,7 @@ const app = express();
 const http = require('http');
 const {createPool}=require('mysql2/promise')
 const server = http.createServer(app);
-const {MYSQL_DATABASE,MYSQL_HOST,MYSQL_USER,MYSQL_PASSWORD,PORT,CORS_ORIGIN,MYSQL_PORT}=require('./config')
+const {MYSQL_DATABASE,MYSQL_HOST,MYSQL_USER,MYSQL_PASSWORD,PORT,CORS_ORIGIN,MYSQL_PORT,SOCKET_KEY}=require('./config')
 
 const io = require('socket.io')(server,{
     cors:{
@@ -23,6 +23,16 @@ res.send('hi')
 })
 
 const conector= createPool({host:MYSQL_HOST,user:MYSQL_USER,password:MYSQL_PASSWORD,port:MYSQL_PORT,database:MYSQL_DATABASE})
+const key=SOCKET_KEY
+
+io.use((socket,next)=>{
+let frontendKey=socket.handshake.query.key
+if(frontendKey !== key){
+    next(new Error("invalid key"))
+}else{
+    next()
+}
+})
 
 io.on('connection',async (socket)=>{ 
 console.log('SOCKET CONECTED:',socket)
