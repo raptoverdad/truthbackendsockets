@@ -29,25 +29,25 @@ io.on('connection',async (socket)=>{
  async function sendVotesAllSockets(){
 
         let [result]=await conector.query('SELECT * FROM surveys')
- 
+        let minafacilvotes= 0
+        let flockpoolvotes=0
+        let raptoreumzonevotes=0
+        let raptorhashvotes=0
+        let inodezvotes=0
+        let sullynodevotes=0
+        let fastvotes=0
+        let slowvotes=0
+        let bitvotes=0
+        let charlievotes=0
+        let verdadvotes=0
+        let rabidvotes=0
+        let zlatachanvotes=0
+        let verdadchanvotes=0
+        let yesvotes=0
+        let novotes=0
         //si hay algun error // socket.emit('error')
         if(result){
-            let minafacilvotes= 0
-            let flockpoolvotes=0
-            let raptoreumzonevotes=0
-            let raptorhashvotes=0
-            let inodezvotes=0
-            let sullynodevotes=0
-            let fastvotes=0
-            let slowvotes=0
-            let bitvotes=0
-            let charlievotes=0
-            let verdadvotes=0
-            let rabidvotes=0
-            let zlatachanvotes=0
-            let verdadchanvotes=0
-            let yesvotes=0
-            let novotes=0
+      
             console.log('sending vote:',result)
             for (let i = 0; i < result.length; i++) {
       
@@ -100,25 +100,25 @@ io.on('connection',async (socket)=>{
     async function sendVotesSocket(){
 
         let [result]=await conector.query('SELECT * FROM surveys')
- 
+        let minafacilvotes= 0
+        let flockpoolvotes=0
+        let raptoreumzonevotes=0
+        let raptorhashvotes=0
+        let inodezvotes=0
+        let sullynodevotes=0
+        let fastvotes=0
+        let slowvotes=0
+        let bitvotes=0
+        let charlievotes=0
+        let verdadvotes=0
+        let rabidvotes=0
+        let zlatachanvotes=0
+        let verdadchanvotes=0
+        let yesvotes=0
+        let novotes=0
         //si hay algun error // socket.emit('error')
         if(result){
-            let minafacilvotes= 0
-            let flockpoolvotes=0
-            let raptoreumzonevotes=0
-            let raptorhashvotes=0
-            let inodezvotes=0
-            let sullynodevotes=0
-            let fastvotes=0
-            let slowvotes=0
-            let bitvotes=0
-            let charlievotes=0
-            let verdadvotes=0
-            let rabidvotes=0
-            let zlatachanvotes=0
-            let verdadchanvotes=0
-            let yesvotes=0
-            let novotes=0
+        
             console.log('sending vote:',result)
             for (let i = 0; i < result.length; i++) {
       
@@ -273,7 +273,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                             if(result7){
 
                                 sendVotes()
-                                
+
                             }
                         } catch (error) {
                             socket.emit('update-error')
