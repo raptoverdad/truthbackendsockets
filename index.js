@@ -27,27 +27,30 @@ const conector= createPool({host:MYSQL_HOST,user:MYSQL_USER,password:MYSQL_PASSW
 io.on('connection',async (socket)=>{ 
 
  async function sendVotes(){
-        let minafacilvotes= 0
-        let flockpoolvotes=0
-        let raptoreumzonevotes=0
-        let raptorhashvotes=0
-        let inodezvotes=0
-        let sullynodevotes=0
-        let fastvotes=0
-        let slowvotes=0
-        let bitvotes=0
-        let charlievotes=0
-        let verdadvotes=0
-        let rabidvotes=0
-        let zlatachanvotes=0
-        let verdadchanvotes=0
-        let yesvotes=0
-        let novotes=0
+
         let [result]=await conector.query('SELECT * FROM surveys')
  
         //si hay algun error // socket.emit('error')
         if(result){
+         
+            console.log('sending vote:',result)
             for (let i = 0; i < result.length; i++) {
+                let minafacilvotes= 0
+                let flockpoolvotes=0
+                let raptoreumzonevotes=0
+                let raptorhashvotes=0
+                let inodezvotes=0
+                let sullynodevotes=0
+                let fastvotes=0
+                let slowvotes=0
+                let bitvotes=0
+                let charlievotes=0
+                let verdadvotes=0
+                let rabidvotes=0
+                let zlatachanvotes=0
+                let verdadchanvotes=0
+                let yesvotes=0
+                let novotes=0
                 if(result[i].miningvote === "minafacil"){
                     minafacilvotes++;
                 } if(result[i].miningvote === "flockpool"){
@@ -92,7 +95,7 @@ io.on('connection',async (socket)=>{
 
  
         }
-        socket.emit('surveysvotes',{minafacilvotes,flockpoolvotes,raptoreumzonevotes,raptorhashvotes,inodezvotes,sullynodevotes,fastvotes,slowvotes,bitvotes,charlievotes,verdadvotes,rabidvotes,zlatachanvotes,verdadchanvotes,yesvotes,novotes})
+       io.sockets.emit('surveysvotes',{minafacilvotes,flockpoolvotes,raptoreumzonevotes,raptorhashvotes,inodezvotes,sullynodevotes,fastvotes,slowvotes,bitvotes,charlievotes,verdadvotes,rabidvotes,zlatachanvotes,verdadchanvotes,yesvotes,novotes})
     }
         
 
@@ -114,28 +117,29 @@ if(result){
 
 socket.on('surveysVisitor',async(token)=>{
             
-    let minafacilvotes= 0
-    let flockpoolvotes=0
-    let raptoreumzonevotes=0
-    let raptorhashvotes=0
-    let inodezvotes=0
-    let sullynodevotes=0
-    let fastvotes=0
-    let slowvotes=0
-    let bitvotes=0
-    let charlievotes=0
-    let verdadvotes=0
-    let rabidvotes=0
-    let zlatachanvotes=0
-    let verdadchanvotes=0
-    let yesvotes=0
-    let novotes=0
 
      try {
         let [resultVisitor]=await conector.query('SELECT * FROM surveys')
-                if(resultVisitor){
-
+            if(resultVisitor){
+             console.log('serveysVisitor:',resultVisitor)
             for (let i = 0; i < resultVisitor.length; i++) {
+                let minafacilvotes= 0
+                let flockpoolvotes=0
+                let raptoreumzonevotes=0
+                let raptorhashvotes=0
+                let inodezvotes=0
+                let sullynodevotes=0
+                let fastvotes=0
+                let slowvotes=0
+                let bitvotes=0
+                let charlievotes=0
+                let verdadvotes=0
+                let rabidvotes=0
+                let zlatachanvotes=0
+                let verdadchanvotes=0
+                let yesvotes=0
+                let novotes=0
+            
             if(resultVisitor[i].miningvote === "minafacil"){
                 minafacilvotes++;
             } if(resultVisitor[i].miningvote === "flockpool"){
