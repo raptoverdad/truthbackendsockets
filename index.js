@@ -25,7 +25,7 @@ res.send('hi')
 const conector= createPool({host:MYSQL_HOST,user:MYSQL_USER,password:MYSQL_PASSWORD,port:MYSQL_PORT,database:MYSQL_DATABASE})
 
 io.on('connection',async (socket)=>{ 
-
+console.log(socket)
  async function sendVotesAllSockets(){
 
         let [result]=await conector.query('SELECT * FROM surveys')
