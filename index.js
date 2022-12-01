@@ -227,7 +227,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                         let [result3] =await conector.query(surveyquery2)
                         try {
                             if(result3){
-                                sendVotesSocket()
+                                sendVotesAllSockets()
                             }
                         } catch (error) {
                             socket.emit('update-error')
@@ -238,7 +238,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                         let [result4]=await conector.query(surveyquery3)
                         try {
                             if(result4){
-                                sendVotesSocket()
+                                sendVotesAllSockets()
                             }
                         } catch (error) {
                             socket.emit('update-error')
@@ -248,7 +248,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                         let [result5]=await conector.query(surveyquery4)
                         try {
                             if(result5){
-                                sendVotesSocket()
+                                sendVotesAllSockets()
                             }
                         } catch (error) {
                             socket.emit('update-error')
@@ -259,7 +259,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                         let [result6]=await conector.query(surveyquery5)
                         try {
                             if(result6){
-                                sendVotesSocket()
+                                sendVotesAllSockets()
                             }
                         } catch (error) {
                             socket.emit('update-error')
@@ -272,7 +272,7 @@ let [result1]=await conector.query(`SELECT * FROM users WHERE email='${data.emai
                         try {
                             if(result7){
 
-                                sendVotesSocket()
+                                sendVotesAllSockets()
 
                             }
                         } catch (error) {
