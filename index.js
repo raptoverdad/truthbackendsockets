@@ -339,7 +339,7 @@ if(data.message.includes("'","''","",'/','"','$','``',`''`,'¨¨','(',')')){
                             console.log('here2')
                         }
                         else if(result11[0].user != ''){
-                            io.sockets.emit('chatMessages',results)
+                            io.sockets.emit('chatMessages',result11)
                             
                           
                         }
